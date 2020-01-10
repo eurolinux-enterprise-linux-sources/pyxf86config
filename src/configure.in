@@ -1,0 +1,58 @@
+AC_INIT(pyxf86config, 0.3.37)
+AC_CONFIG_SRCDIR(configure.in)
+AM_INIT_AUTOMAKE([dist-bzip2 foreign])
+
+AM_CONFIG_HEADER(config.h)
+
+AC_PROG_CC
+AC_ISC_POSIX
+AC_PROG_LN_S
+AC_PATH_PROG(MAKE,make)
+AC_PROG_MAKE_SET
+AC_PROG_AWK
+
+AM_PROG_LIBTOOL
+
+PKG_CHECK_MODULES(GLIB,[glib-2.0 gmodule-2.0])
+PKG_CHECK_MODULES(GOBJECT,[glib-2.0 gmodule-2.0 gobject-2.0])
+PKG_CHECK_MODULES(XORG_SERVER,[xorg-server])
+AC_DEFINE(G_DISABLE_DEPRECATED,,[Stay away from deprecated glib functionality.])
+
+AM_MAINTAINER_MODE
+if test x$GCC = xyes; then
+    if test x$MAINTAINER_MODE = xyes; then
+	CFLAGS="$CFLAGS -Wall -Wimplicit -Wcast-align -Wpointer-arith -Wimplicit-prototypes -Wmissing-prototypes"
+    else
+        CFLAGS="$CFLAGS -Wall"
+    fi
+fi
+
+# Find the X11 include and library directories
+AC_PATH_X
+AC_PATH_XTRA
+
+x_cflags="$X_CFLAGS"
+x_ldflags="$X_LDFLAGS $X_LIBS"
+	
+AC_SUBST(x_cflags)
+AC_SUBST(x_includes)
+		
+PYTHON_VERSION=2.5
+AC_ARG_WITH(python-version,
+[  --with-python-version=2.2 Version of Python to build modules for],
+[PYTHON_VERSION=$withval])
+
+PYTHON_INC=/usr/include/python${PYTHON_VERSION}
+AC_ARG_WITH(python-path,
+[  --with-python-path=DIR Directory headers for your version of Python are in],
+[PYTHON_INC=$withval])
+
+AC_HEADER_STDC
+
+AC_C_CONST
+
+AC_SUBST(PYTHON_VERSION)
+AC_SUBST(PYTHON_INC)
+
+AC_OUTPUT([Makefile
+])

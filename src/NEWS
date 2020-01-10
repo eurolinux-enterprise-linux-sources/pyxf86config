@@ -1,0 +1,10 @@
+pyxf86config 0.2.0
+------------------
+Added simple template creation function.
+Some minor API additions
+
+pyxf86config 0.1.0
+------------------
+
+Initial release. Seems to work.
+
